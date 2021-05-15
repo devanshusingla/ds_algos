@@ -24,7 +24,7 @@
 // use cin.ignore() after cin statement.
 using namespace std ;
 
-// Juggling algorithm for array rotation
+// Reversal algorithm for array rotation
 
 // Time complexity -> O(n)
 // Space complexity -> O(1)
@@ -33,25 +33,37 @@ using namespace std ;
 // last -> iterator of element after last element
 // d -> right rotation displacement
 template <class RandomAccessIterator, typename T>
-void juggler(RandomAccessIterator first, RandomAccessIterator last, T d){
+void reversal(RandomAccessIterator first, RandomAccessIterator last, T d){
     T n = distance(first, last);
     if(d<0){
         d = ((1+abs(d)/n)*n + d)%n;
     } else {
         d %= n;
     }
-    T g = __gcd(n,d);
-    for(T s=0; s<g; s++){
-        auto prev = first[s];
-        auto temp = first[0];
-        T i=(s+d)%n;
-        while(i != s){
-            temp = first[i];
-            first[i] = prev;
-            prev = temp;
-            i = (i+n+d)%n;
-        }
-        first[i] = prev;
+    auto temp = first[0];
+    T i=0;
+    T j=n-d-1;
+    while(i<j){
+        temp = first[i];
+        first[i] = first[j];
+        first[j] = temp;
+        i++;j--;
+    }
+    i=n-d;
+    j=n-1;
+    while(i<j){
+        temp = first[i];
+        first[i] = first[j];
+        first[j] = temp;
+        i++;j--;
+    }
+    i=0;
+    j=n-1;
+    while(i<j){
+        temp = first[i];
+        first[i] = first[j];
+        first[j] = temp;
+        i++;j--;
     }
 }
 
@@ -62,11 +74,11 @@ void test(){
     cout<<endl;
 
     cout<<"\nRotating by 24"<<endl;
-    juggler(arr, arr+10, 24);
+    reversal(arr, arr+10, 24);
     for(int i=0; i<10; i++) cout<<arr[i]<<" ";
 
     cout<<"\nRotating by -26"<<endl;
-    juggler(arr, arr+10, -6);
+    reversal(arr, arr+10, -6);
     for(int i=0; i<10; i++) cout<<arr[i]<<" ";
 }
 
